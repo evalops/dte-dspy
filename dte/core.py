@@ -136,6 +136,51 @@ class VerificationResult:
                 except ValueError:
                     continue
         
+        # Look for confidence words
+        confidence_words = {
+            # High confidence
+            'certain': 0.9,
+            'definitely': 0.85,
+            'absolutely': 0.9,
+            'completely': 0.85,
+            'totally': 0.8,
+            'very confident': 0.85,
+            'highly confident': 0.9,
+            'extremely confident': 0.95,
+            'very sure': 0.85,
+            'quite sure': 0.8,
+            'positive': 0.8,
+            'convinced': 0.85,
+            
+            # Medium confidence  
+            'confident': 0.75,
+            'sure': 0.7,
+            'likely': 0.7,
+            'probably': 0.7,
+            'fairly confident': 0.7,
+            'reasonably sure': 0.7,
+            'believe': 0.65,
+            'think': 0.6,
+            
+            # Low confidence
+            'might': 0.4,
+            'maybe': 0.4,
+            'perhaps': 0.4,
+            'possibly': 0.4,
+            'uncertain': 0.3,
+            'unsure': 0.3,
+            'doubtful': 0.3,
+            'not sure': 0.3,
+            'might be wrong': 0.3,
+            'could be wrong': 0.3,
+            'not certain': 0.4,
+        }
+        
+        # Check for confidence words (case-insensitive)
+        for word, conf_value in confidence_words.items():
+            if word in text:
+                return conf_value
+        
         # Conservative fallback - avoid overconfident defaults
         logger.warning(f"No confidence found, using conservative default for verdict: {verdict}")
         return 0.6  # Moderate confidence when uncertain

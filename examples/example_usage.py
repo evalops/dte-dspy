@@ -7,8 +7,12 @@ system for fact verification.
 """
 
 import sys
+import os
 import json
 from typing import List
+
+# Add the parent directory to sys.path to import from scripts
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.dte_core import DTESystem, create_simple_test_models
 from scripts.evaluation_harness import DTEEvaluator, create_example_dataset
@@ -19,10 +23,19 @@ def example_basic_usage():
     """Basic DTE system usage example."""
     print("=== Basic DTE Usage Example ===")
     
-    # Create DTE system with simple test models
+    # Create DTE system with Ollama models (if available)
     print("Creating DTE system...")
-    model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, referee_lm=referee, default_gamma=0.7)
+    try:
+        dte = create_ollama_dte_system(
+            verifier_a_model="llama3.2:latest",
+            verifier_b_model="llama3:8b", 
+            judge_model="llama3.1:8b",
+            default_gamma=0.7
+        )
+        print("✅ Using real Ollama models")
+    except Exception as e:
+        print(f"⚠️ Ollama not available, skipping: {e}")
+        return
     
     # Test claims
     test_claims = [
@@ -41,8 +54,8 @@ def example_basic_usage():
         print(f"  → Escalated: {'YES' if result.escalated else 'NO'}")
         print(f"  → Verifier A: pred={result.verifier_a_result.prediction}, conf={result.verifier_a_result.confidence:.2f}")
         print(f"  → Verifier B: pred={result.verifier_b_result.prediction}, conf={result.verifier_b_result.confidence:.2f}")
-        if result.escalated and result.referee_result:
-            print(f"  → Referee: pred={result.referee_result.prediction}, conf={result.referee_result.confidence:.2f}")
+        if result.escalated and result.judge_result:
+            print(f"  → Judge: pred={result.judge_result.prediction}, conf={result.judge_result.confidence:.2f}")
         print()
     
     # Show final metrics
@@ -59,9 +72,17 @@ def example_gamma_sweep():
     """Gamma threshold sweep analysis example."""
     print("\n=== Gamma Sweep Analysis Example ===")
     
-    # Create DTE system
-    model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, referee_lm=referee)
+    # Create DTE system with Ollama models
+    try:
+        dte = create_ollama_dte_system(
+            verifier_a_model="llama3.2:latest",
+            verifier_b_model="llama3:8b", 
+            judge_model="llama3.1:8b"
+        )
+        print("✅ Using real Ollama models")
+    except Exception as e:
+        print(f"⚠️ Ollama not available, skipping: {e}")
+        return
     
     # Create evaluator
     evaluator = DTEEvaluator(dte)
@@ -165,10 +186,18 @@ def example_custom_dataset():
     """Custom dataset evaluation example."""
     print("\n=== Custom Dataset Example ===")
     
-    # Create DTE system
-    model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, referee_lm=referee)
-    evaluator = DTEEvaluator(dte)
+    # Create DTE system with Ollama models
+    try:
+        dte = create_ollama_dte_system(
+            verifier_a_model="llama3.2:latest",
+            verifier_b_model="llama3:8b", 
+            judge_model="llama3.1:8b"
+        )
+        evaluator = DTEEvaluator(dte)
+        print("✅ Using real Ollama models")
+    except Exception as e:
+        print(f"⚠️ Ollama not available, skipping: {e}")
+        return
     
     # Custom claims about programming
     programming_claims = [

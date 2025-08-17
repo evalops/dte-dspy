@@ -46,7 +46,7 @@ def test_confidence_extraction():
     assert result2.confidence > 0.8, f"Expected high confidence, got {result2.confidence}"
     
     result3 = VerificationResult.from_verdict("no", "I might be wrong but this seems false", "")
-    assert result3.confidence < 0.6, f"Expected low confidence, got {result3.confidence}"
+    assert result3.confidence < 0.5, f"Expected low confidence, got {result3.confidence}"
     
     print("✓ Confidence extraction working correctly")
 

@@ -5,7 +5,7 @@ Demo showing DTE system with both consensus and escalation cases.
 
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.dte_ollama import DTESystem
 
