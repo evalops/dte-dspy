@@ -415,6 +415,20 @@ If you use this framework in your research, please cite:
 - **False Consensus Effect**: Ross, L., Greene, D., & House, P. (1977). "The 'false consensus effect': An egocentric bias in social perception and attribution processes." *Journal of Experimental Social Psychology*, 13(3), 279-301
 - **Byzantine Fault Tolerance**: Castro, M., & Liskov, B. (1999). "Practical Byzantine fault tolerance." *Proceedings of the third symposium on Operating systems design and implementation* (OSDI), 173-186
 
+### Relationship to Existing Research
+
+The DTE framework, while presenting a novel approach, is deeply rooted in several established fields of study. Its contribution can be best understood by examining its relationship to the following areas:
+
+-   **Multi-Agent Fact Verification:** DTE is a specific implementation of a multi-agent verification system. It employs the common pattern of decomposing the verification task between multiple agents (the "verifiers") and then using a separate agent (the "judge") to synthesize the results.
+
+-   **Hierarchical Consensus Mechanisms:** The escalation process in DTE is a direct application of hierarchical consensus, a well-known strategy in multi-agent systems. The key innovation of DTE is the use of *disagreement* as the specific trigger for escalating up the hierarchy.
+
+-   **Byzantine Fault Tolerance (BFT):** The DTE framework's ability to prevent "folie à deux" (shared delusion) is a practical application of BFT principles. By treating disagreement as a potential fault signal, DTE builds resilience against situations where multiple agents might converge on an incorrect answer.
+
+-   **Multi-Agent Bias Detection:** DTE can be viewed as a mechanism for mitigating bias. By using verifier agents with different characteristics (e.g., different models, different temperatures), the framework increases the likelihood of disagreements that can surface and address potential biases.
+
+-   **The Consensus-Truth Divergence Problem:** At its core, DTE is a direct response to the fundamental challenge that consensus among agents does not always guarantee a truthful outcome. By refusing to blindly accept consensus and instead using disagreement as a signal for further scrutiny, the DTE framework offers a practical solution to this long-standing problem.
+
 ### Contemporary Research Areas
 - **Multi-Agent Fact Verification**: Adaptive frameworks for dynamic fact-checking evaluation
 - **Bias Detection Systems**: Systematic approaches to identifying verification bias in distributed systems
