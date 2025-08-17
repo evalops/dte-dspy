@@ -129,7 +129,7 @@ def main(args: Optional[List[str]] = None) -> int:
         if parsed_args.verifier_b:
             config.verifier_b_model = parsed_args.verifier_b
         if parsed_args.referee:
-            config.referee_model = parsed_args.referee
+            config.judge_model = parsed_args.referee
         if parsed_args.api_base:
             config.api_base = parsed_args.api_base
         if parsed_args.dataset_size:
@@ -153,7 +153,7 @@ def main(args: Optional[List[str]] = None) -> int:
         dte_system = DTESystem(
             verifier_a_lm=verifier_a_lm,
             verifier_b_lm=verifier_b_lm,
-            referee_lm=referee_lm,
+            judge_lm=referee_lm,
             gamma=config.gamma,
             use_cot=config.use_cot
         )
@@ -162,7 +162,7 @@ def main(args: Optional[List[str]] = None) -> int:
             print(f"🎯 DTE System initialized:")
             print(f"   Verifier A: {config.verifier_a_model}")
             print(f"   Verifier B: {config.verifier_b_model}")
-            print(f"   Referee: {config.referee_model}")
+            print(f"   Referee: {config.judge_model}")
             print(f"   Gamma: {config.gamma}")
         
         # Create evaluator

@@ -78,7 +78,7 @@ class DTESystem:
     
     def reset_metrics(self):
         """Reset all metrics counters."""
-        self.metrics = {
+        self.metrics: dict[str, int | float] = {
             'total_evaluations': 0,
             'escalations': 0,
             'agreements': 0,

@@ -8,6 +8,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import dspy
+from typing import Optional
 from dte_ollama import Verifier, DTEResult
 
 class BiasedVerifier(dspy.Module):
@@ -67,7 +68,7 @@ class ForcedDisagreementDTE:
         
         self.metrics = {'evaluations': 0, 'escalations': 0}
         
-    def evaluate_claim(self, claim: str, ground_truth: str = None) -> DTEResult:
+    def evaluate_claim(self, claim: str, ground_truth: Optional[str] = None) -> DTEResult:
         """Evaluate with forced disagreement."""
         self.metrics['evaluations'] += 1
         

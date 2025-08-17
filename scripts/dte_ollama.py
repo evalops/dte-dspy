@@ -124,7 +124,7 @@ class DTESystem:
     
     def reset_metrics(self):
         """Reset metrics counters."""
-        self.metrics = {
+        self.metrics: dict[str, int | float] = {
             'total_evaluations': 0,
             'escalations': 0,
             'agreements': 0,
@@ -326,7 +326,7 @@ def main():
         dte = DTESystem(
             verifier_a_model="llama3:8b",           # Use available llama3:8b
             verifier_b_model="llama3.2:latest",    # Different model for diversity
-            referee_model="llama3.3:latest",       # Larger model as referee
+            judge_model="llama3.3:latest",       # Larger model as referee
             gamma=0.7
         )
         print("✓ DTE system initialized")

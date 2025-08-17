@@ -100,7 +100,7 @@ class DTEEvaluator:
     
     def gamma_sweep_evaluation(self, 
                              dataset: pd.DataFrame,
-                             gamma_values: List[float] = None,
+                             gamma_values: Optional[List[float]] = None,
                              verbose: bool = True) -> pd.DataFrame:
         """
         Evaluate DTE system across different gamma thresholds.

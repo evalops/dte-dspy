@@ -160,7 +160,7 @@ def test_real_models(seed: int = 42):
                 'time': elapsed,
                 'a_confidence': a_conf,
                 'b_confidence': b_conf,
-                'ref_confidence': ref_conf
+                'ref_confidence': judge_conf
             }
             labeled_results.append(labeled_result)
 
@@ -215,7 +215,7 @@ def test_real_models(seed: int = 42):
                 'escalated': result.escalated,
                 'a_confidence': a_conf,
                 'b_confidence': b_conf,
-                'ref_confidence': ref_conf,
+                'ref_confidence': judge_conf,
                 'time': elapsed,
                 'a_reasoning': result.verifier_a_result.reasoning[:150] + "..." if len(result.verifier_a_result.reasoning) > 150 else result.verifier_a_result.reasoning,
                 'b_reasoning': result.verifier_b_result.reasoning[:150] + "..." if len(result.verifier_b_result.reasoning) > 150 else result.verifier_b_result.reasoning
@@ -231,7 +231,7 @@ def test_real_models(seed: int = 42):
             print(f"    Verifier B: {b_verdict} (confidence: {b_conf:.2f})")
             if result.judge_result:
                 judge_verdict = "yes" if result.judge_result.prediction == 1 else "no"
-                print(f"    Judge:    {judge_verdict} (confidence: {ref_conf:.2f})")
+                print(f"    Judge:    {judge_verdict} (confidence: {judge_conf:.2f})")
             print(f"    → Final: {final_verdict} | Escalated: {result.escalated} | Time: {elapsed:.1f}s")
 
         except TimeoutError as e:

@@ -96,9 +96,13 @@ def demonstrate_escalation():
                 print("    Reason: Low confidence despite agreement")
                 print(f"        Average confidence {avg_confidence:.3f} < threshold {config.gamma}")
                 
-            referee_verdict = "yes" if result.judge_result.prediction == 1 else "no"
-            print(f"    Referee ({config.judge_model}): {referee_verdict}")
-            print(f"        Confidence: {result.judge_result.confidence:.3f}")
+            if result.judge_result:
+                referee_verdict = "yes" if result.judge_result.prediction == 1 else "no"
+                print(f"    Referee ({config.judge_model}): {referee_verdict}")
+                print(f"        Confidence: {result.judge_result.confidence:.3f}")
+            else:
+                print(f"    Referee ({config.judge_model}): No result (should not happen)")
+                print(f"        Confidence: N/A")
             print(f"    💰 Cost: 3 LLM calls")
             
         else:
