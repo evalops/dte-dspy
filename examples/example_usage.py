@@ -22,7 +22,7 @@ def example_basic_usage():
     # Create DTE system with simple test models
     print("Creating DTE system...")
     model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(model_a, model_b, referee, default_gamma=0.7)
+    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, judge_lm=referee, gamma=0.7)
     
     # Test claims
     test_claims = [
@@ -42,7 +42,7 @@ def example_basic_usage():
         print(f"  → Verifier A: pred={result.verifier_a_result.prediction}, conf={result.verifier_a_result.confidence:.2f}")
         print(f"  → Verifier B: pred={result.verifier_b_result.prediction}, conf={result.verifier_b_result.confidence:.2f}")
         if result.escalated:
-            print(f"  → Referee: pred={result.referee_result.prediction}, conf={result.referee_result.confidence:.2f}")
+            print(f"  → Referee: pred={result.judge_result.prediction}, conf={result.judge_result.confidence:.2f}")
         print()
     
     # Show final metrics
@@ -61,7 +61,7 @@ def example_gamma_sweep():
     
     # Create DTE system
     model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(model_a, model_b, referee)
+    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, judge_lm=referee)
     
     # Create evaluator
     evaluator = DTEEvaluator(dte)
@@ -135,7 +135,7 @@ def example_ollama_integration():
         dte = create_ollama_dte_system(
             verifier_a_model=verifier_a,
             verifier_b_model=verifier_b,
-            referee_model=referee,
+            judge_model=referee,
             ensure_models=False  # Don't auto-pull for demo
         )
         
@@ -167,7 +167,7 @@ def example_custom_dataset():
     
     # Create DTE system
     model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(model_a, model_b, referee)
+    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, judge_lm=referee)
     evaluator = DTEEvaluator(dte)
     
     # Custom claims about programming
@@ -213,7 +213,7 @@ def example_interactive_mode():
     
     # Create DTE system
     model_a, model_b, referee = create_simple_test_models()
-    dte = DTESystem(model_a, model_b, referee, default_gamma=0.7)
+    dte = DTESystem(verifier_a_lm=model_a, verifier_b_lm=model_b, judge_lm=referee, gamma=0.7)
     
     print("Interactive DTE System")
     print("Enter claims to evaluate (or 'quit' to exit):")
@@ -238,7 +238,7 @@ def example_interactive_mode():
                   f"B={result.verifier_b_result.confidence:.2f}")
             
             if result.escalated:
-                print(f"Referee confidence: {result.referee_result.confidence:.2f}")
+                print(f"Referee confidence: {result.judge_result.confidence:.2f}")
                 
         except KeyboardInterrupt:
             break

@@ -120,9 +120,9 @@ def test_dte_system_integration():
     mock_referee_output.reasoning = "After careful analysis, I'm 95% confident this is correct"
     
     # Override verifier methods
-    dte.verifier_a.forward = lambda claim: mock_a_output
-    dte.verifier_b.forward = lambda claim: mock_b_output
-    dte.referee.forward = lambda claim: mock_referee_output
+    dte.verifier_a.forward = lambda **kwargs: mock_a_output
+    dte.verifier_b.forward = lambda **kwargs: mock_b_output
+    dte.judge.forward = lambda **kwargs: mock_referee_output
     
     # Test evaluation
     result = dte.evaluate_claim("Test claim", "yes")

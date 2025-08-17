@@ -51,7 +51,7 @@ def test_config():
     return DTEConfig(
         verifier_a_model="test_model_a",
         verifier_b_model="test_model_b", 
-        referee_model="test_referee",
+        judge_model="test_referee",
         gamma=0.7,
         use_cot=True,
         api_base="http://test:11434"
@@ -64,7 +64,7 @@ def dte_system(mock_lm_yes, mock_lm_no, mock_lm_neutral):
     return DTESystem(
         verifier_a_lm=mock_lm_yes,
         verifier_b_lm=mock_lm_no,
-        referee_lm=mock_lm_neutral,
+        judge_lm=mock_lm_neutral,
         gamma=0.7
     )
 
@@ -76,7 +76,7 @@ def consensus_dte_system(mock_lm_yes, mock_lm_neutral):
     return DTESystem(
         verifier_a_lm=mock_lm_yes,
         verifier_b_lm=mock_lm_agree,
-        referee_lm=mock_lm_neutral,
+        judge_lm=mock_lm_neutral,
         gamma=0.7
     )
 
@@ -115,7 +115,7 @@ def sample_dte_results():
             escalated=True,
             verifier_a_result=VerificationResult(1, 0.8),
             verifier_b_result=VerificationResult(0, 0.9),
-            referee_result=VerificationResult(0, 0.95),
+            judge_result=VerificationResult(0, 0.95),
             gamma_threshold=0.7
         )
     ]

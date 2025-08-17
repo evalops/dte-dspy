@@ -18,14 +18,14 @@ def main():
     dte = DTESystem(
         verifier_a_model="llama3.2:latest",
         verifier_b_model="llama3:8b", 
-        referee_model="llama3.1:8b",
+        judge_model="llama3.1:8b",
         gamma=0.7
     )
     
     print("✅ DTE System Ready")
     print(f"   Verifier A: llama3.2:latest (temp=0.1)")
     print(f"   Verifier B: llama3:8b (temp=0.9)")  
-    print(f"   Referee: llama3.1:8b (temp=0.0)")
+    print(f"   Judge: llama3.1:8b (temp=0.0)")
     print(f"   Gamma threshold: {dte.gamma}")
     print()
     
@@ -48,8 +48,8 @@ def main():
         print(f"Agreement: {'YES' if result.verifier_a_verdict == result.verifier_b_verdict else 'NO'}")
         
         if result.escalated:
-            print(f"🔥 ESCALATED to referee")
-            print(f"Referee verdict: {result.referee_verdict}")
+            print(f"🔥 ESCALATED to judge")
+            print(f"Judge verdict: {result.judge_verdict}")
             print(f"Final decision: {result.final_verdict}")
             print(f"Cost: 3 model calls")
         else:
@@ -73,7 +73,7 @@ def main():
     print("\n🎉 Demo complete! The DTE system successfully:")
     print("   • Detects when verifiers agree (consensus)")
     print("   • Escalates when verifiers disagree") 
-    print("   • Uses referee to resolve conflicts")
+    print("   • Uses judge to resolve conflicts")
     print("   • Tracks accuracy and cost metrics")
 
 if __name__ == "__main__":

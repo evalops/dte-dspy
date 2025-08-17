@@ -21,7 +21,7 @@ def demonstrate_escalation():
     config = DTEConfig(
         verifier_a_model="llama3.2:latest",  # Small model, fast responses
         verifier_b_model="gpt-oss:20b",      # Large model, different training
-        referee_model="qwq:latest",          # Reasoning-focused model
+        judge_model="qwq:latest",          # Reasoning-focused model
         temperature_a=0.0,  # Deterministic
         temperature_b=0.8,  # High creativity/diversity  
         gamma=0.8,          # High confidence threshold
@@ -31,7 +31,7 @@ def demonstrate_escalation():
     print("🎯 DTE System Configuration:")
     print(f"   Verifier A: {config.verifier_a_model} (temp={config.temperature_a}) - Deterministic")
     print(f"   Verifier B: {config.verifier_b_model} (temp={config.temperature_b}) - Creative") 
-    print(f"   Referee: {config.referee_model} (temp={config.temperature_referee}) - Reasoning")
+    print(f"   Referee: {config.judge_model} (temp={config.temperature_judge}) - Reasoning")
     print(f"   Gamma threshold: {config.gamma} (high = more escalations)")
     print()
     
@@ -96,9 +96,9 @@ def demonstrate_escalation():
                 print("    Reason: Low confidence despite agreement")
                 print(f"        Average confidence {avg_confidence:.3f} < threshold {config.gamma}")
                 
-            referee_verdict = "yes" if result.referee_result.prediction == 1 else "no"
-            print(f"    Referee ({config.referee_model}): {referee_verdict}")
-            print(f"        Confidence: {result.referee_result.confidence:.3f}")
+            referee_verdict = "yes" if result.judge_result.prediction == 1 else "no"
+            print(f"    Referee ({config.judge_model}): {referee_verdict}")
+            print(f"        Confidence: {result.judge_result.confidence:.3f}")
             print(f"    💰 Cost: 3 LLM calls")
             
         else:

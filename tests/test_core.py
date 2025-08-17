@@ -68,8 +68,8 @@ class TestDTESystem:
         assert result.escalated
         assert result.verifier_a_result.prediction == 1  # yes
         assert result.verifier_b_result.prediction == 0  # no
-        assert result.referee_result is not None
-        assert result.final_prediction == result.referee_result.prediction
+        assert result.judge_result is not None
+        assert result.final_prediction == result.judge_result.prediction
     
     def test_evaluate_claim_consensus(self, consensus_dte_system):
         """Test consensus when verifiers agree."""
@@ -79,7 +79,7 @@ class TestDTESystem:
         assert not result.escalated
         assert result.verifier_a_result.prediction == 1  # yes
         assert result.verifier_b_result.prediction == 1  # yes
-        assert result.referee_result is None
+        assert result.judge_result is None
         assert result.final_prediction == 1
     
     def test_metrics_tracking(self, dte_system):
@@ -96,7 +96,7 @@ class TestDTESystem:
         assert metrics['disagreements'] == 1
         assert metrics['verifier_a_calls'] == 1
         assert metrics['verifier_b_calls'] == 1
-        assert metrics['referee_calls'] == 1
+        assert metrics['judge_calls'] == 1
     
     def test_get_metrics_calculations(self, dte_system):
         """Test that metric calculations are correct."""
