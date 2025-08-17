@@ -41,7 +41,7 @@ def example_basic_usage():
         print(f"  → Escalated: {'YES' if result.escalated else 'NO'}")
         print(f"  → Verifier A: pred={result.verifier_a_result.prediction}, conf={result.verifier_a_result.confidence:.2f}")
         print(f"  → Verifier B: pred={result.verifier_b_result.prediction}, conf={result.verifier_b_result.confidence:.2f}")
-        if result.escalated:
+        if result.escalated and result.referee_result:
             print(f"  → Referee: pred={result.referee_result.prediction}, conf={result.referee_result.confidence:.2f}")
         print()
     
@@ -237,7 +237,7 @@ def example_interactive_mode():
             print(f"Confidence: A={result.verifier_a_result.confidence:.2f}, "
                   f"B={result.verifier_b_result.confidence:.2f}")
             
-            if result.escalated:
+            if result.escalated and result.referee_result:
                 print(f"Referee confidence: {result.referee_result.confidence:.2f}")
                 
         except KeyboardInterrupt:

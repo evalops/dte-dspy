@@ -74,6 +74,7 @@ class DTESystem:
         self.default_gamma = default_gamma
         
         # Metrics tracking
+        self.metrics: dict[str, int | float] = {}
         self.reset_metrics()
     
     def reset_metrics(self):

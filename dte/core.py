@@ -192,6 +192,7 @@ class DTESystem:
         self.judge_lm = judge_lm
         
         self.gamma = gamma
+        self.metrics: dict[str, int | float] = {}
         self.reset_metrics()
     
     def reset_metrics(self):

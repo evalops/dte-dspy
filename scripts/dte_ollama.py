@@ -104,6 +104,7 @@ class DTESystem:
         self._verify_models([verifier_a_model, verifier_b_model, judge_model])
         
         # Metrics tracking
+        self.metrics: dict[str, int | float] = {}
         self.reset_metrics()
     
     def _verify_models(self, model_names: List[str]):

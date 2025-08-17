@@ -138,7 +138,7 @@ def test_error_recovery():
     print("Testing error recovery...")
     
     # Create DTE system with None models (will cause errors)
-    dte = DTESystem(None, None, None, default_gamma=0.7)
+    dte = DTESystem(None, None, None, gamma=0.7)
     
     try:
         result = dte.evaluate_claim("Test claim")

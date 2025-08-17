@@ -141,9 +141,9 @@ class DTEEvaluator:
                        disable=not verbose, leave=False)
         
         for _, row in iterator:
-            result = self.dte_system.evaluate_claim(row['claim'], gamma)
+            result = self.dte_system.evaluate_claim(str(row['claim']), gamma)
             predictions.append(result.final_prediction)
-            escalation_flags.append(result.escalated)
+            escalation_flags.append(int(result.escalated))
             
             if result.escalated:
                 escalated_predictions.append(result.final_prediction)
@@ -176,7 +176,7 @@ class DTEEvaluator:
         total_consensus_count = 0
         
         for i, row in dataset.iterrows():
-            result = self.dte_system.evaluate_claim(row['claim'], gamma)
+            result = self.dte_system.evaluate_claim(str(row['claim']), gamma)
             verifier_agreement = (result.verifier_a_result.prediction == 
                                 result.verifier_b_result.prediction)
             
