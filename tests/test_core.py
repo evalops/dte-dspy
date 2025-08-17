@@ -14,12 +14,12 @@ class TestVerificationResult:
         assert result.reasoning == "reasoning"
     
     def test_from_verdict_yes(self):
-        result = VerificationResult.from_verdict("yes", 0.9)
+        result = VerificationResult.from_verdict("yes", structured_confidence=0.9)
         assert result.prediction == 1
         assert result.confidence == 0.9
     
     def test_from_verdict_no(self):
-        result = VerificationResult.from_verdict("no", 0.7)
+        result = VerificationResult.from_verdict("no", structured_confidence=0.7)
         assert result.prediction == 0
         assert result.confidence == 0.7
 

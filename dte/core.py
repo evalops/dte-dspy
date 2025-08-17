@@ -88,7 +88,7 @@ class VerificationResult:
     raw_output: str = ""  # raw model output for debugging
     
     @classmethod
-    def from_verdict(cls, verdict: str, reasoning: str = "", raw_output: str = "", structured_confidence: float = None) -> "VerificationResult":
+    def from_verdict(cls, verdict: str, reasoning: str = "", raw_output: str = "", structured_confidence: Optional[float] = None) -> "VerificationResult":
         """Create from yes/no verdict with confidence extraction."""
         prediction = 1 if verdict == "yes" else 0
         confidence = cls._extract_confidence(reasoning, raw_output, verdict, structured_confidence)
@@ -100,7 +100,7 @@ class VerificationResult:
         )
     
     @staticmethod
-    def _extract_confidence(reasoning: str, raw_output: str, verdict: str, structured_confidence: float = None) -> float:
+    def _extract_confidence(reasoning: str, raw_output: str, verdict: str, structured_confidence: Optional[float] = None) -> float:
         """Extract confidence, preferring structured output over pattern matching."""
         # Use structured confidence if available (from JSON schema)
         if structured_confidence is not None:
