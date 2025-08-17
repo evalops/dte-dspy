@@ -134,7 +134,7 @@ class DTEEvaluator:
         predictions = []
         escalated_predictions = []
         non_escalated_predictions = []
-        escalation_flags = []
+        escalation_flags: list[bool] = []
         
         iterator = tqdm(dataset.iterrows(), total=len(dataset), 
                        desc=f"Evaluating γ={gamma:.2f}", 
@@ -143,7 +143,7 @@ class DTEEvaluator:
         for _, row in iterator:
             result = self.dte_system.evaluate_claim(str(row['claim']), gamma)
             predictions.append(result.final_prediction)
-            escalation_flags.append(int(result.escalated))
+            escalation_flags.append(result.escalated)
             
             if result.escalated:
                 escalated_predictions.append(result.final_prediction)
@@ -156,7 +156,7 @@ class DTEEvaluator:
         
         # Escalation-specific metrics
         escalated_mask = np.array(escalation_flags, dtype=bool)
-        escalation_rate = np.mean(escalated_mask.astype(float))
+        escalation_rate = sum(escalation_flags) / len(escalation_flags)
         
         escalated_accuracy = None
         non_escalated_accuracy = None

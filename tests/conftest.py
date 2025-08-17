@@ -73,9 +73,9 @@ def dte_system(mock_lm_yes, mock_lm_no, mock_lm_neutral):
 def consensus_dte_system(mock_lm_yes, mock_lm_neutral):
     """DTE system where verifiers agree."""
     mock_lm_agree = MockLM("mock_agree", "yes")
-    return DTESystem(
+    return DTESystem(  # type: ignore
         verifier_a_lm=mock_lm_yes,
-        verifier_b_lm=mock_lm_agree,
+        verifier_b_lm=mock_lm_agree,  # type: ignore
         judge_lm=mock_lm_neutral,
         gamma=0.7
     )

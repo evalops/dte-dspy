@@ -171,7 +171,7 @@ def generate_pull_commands(missing_models: list[str]) -> str:
     if not missing_models:
         return ""
 
-    commands = []
+    commands: list[str] = []
     for model in missing_models:
         commands.append(f"ollama pull {model}")
 

@@ -134,11 +134,11 @@ class DTESystem:
         
         # Get predictions from both verifiers
         with dspy.context(lm=self.verifier_a_lm):
-            a_output = self.verifier_a(claim=claim)
+            a_output = self.verifier_a(claim=claim)  # type: ignore
             self.metrics['verifier_a_calls'] += 1
             
         with dspy.context(lm=self.verifier_b_lm):
-            b_output = self.verifier_b(claim=claim)
+            b_output = self.verifier_b(claim=claim)  # type: ignore
             self.metrics['verifier_b_calls'] += 1
         
         a_result = self._parse_verifier_output(a_output)
@@ -170,7 +170,7 @@ class DTESystem:
         self.metrics['referee_calls'] += 1
         
         with dspy.context(lm=self.referee_lm):
-            r_output = self.referee(claim=claim)
+            r_output = self.referee(claim=claim)  # type: ignore
             
         r_result = self._parse_verifier_output(r_output)
         

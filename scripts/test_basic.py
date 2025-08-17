@@ -47,13 +47,13 @@ def test_dte_structure():
     referee = MockLM("referee", "no")
     
     # Create DTE system
-    dte = DTESystem(verifier_a, verifier_b, referee, default_gamma=0.7)
+    dte = DTESystem(verifier_a, verifier_b, referee, default_gamma=0.7)  # type: ignore
     
     # Test basic properties
     assert dte.default_gamma == 0.7
-    assert dte.verifier_a_lm.name == "verifier_a"
-    assert dte.verifier_b_lm.name == "verifier_b"
-    assert dte.referee_lm.name == "referee"
+    assert dte.verifier_a_lm.name == "verifier_a"  # type: ignore
+    assert dte.verifier_b_lm.name == "verifier_b"  # type: ignore
+    assert dte.referee_lm.name == "referee"  # type: ignore
     
     print("✓ DTE system created successfully")
     
@@ -143,7 +143,7 @@ def test_escalation_logic():
     verifier_b = MockLM("verifier_b", "yes")  # Agreement case
     referee = MockLM("referee", "no")
     
-    dte = DTESystem(verifier_a, verifier_b, referee, default_gamma=0.7)
+    dte = DTESystem(verifier_a, verifier_b, referee, default_gamma=0.7)  # type: ignore
     
     # Mock the verifier calls by directly testing the decision logic
     a_result = VerificationResult(1, 0.8, "A says yes")  # high confidence

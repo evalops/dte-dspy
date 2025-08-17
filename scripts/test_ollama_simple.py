@@ -47,7 +47,7 @@ def test_simple_dspy_ollama():
         
         # Simple test question
         result = qa(question="What is 2+2?")
-        print(f"✓ Generation successful: {result.answer}")
+        print(f"✓ Generation successful: {result.answer}")  # type: ignore
         
         return True
         
@@ -74,7 +74,7 @@ def test_verification_signature():
         
         # Test claim
         result = verifier(claim="The capital of France is Paris.")
-        print(f"✓ Verification successful: {result.verdict}")
+        print(f"✓ Verification successful: {result.verdict}")  # type: ignore
         
         return True
         

@@ -35,21 +35,21 @@ class Verifier(dspy.Module):
     def forward(self, claim: str) -> dspy.Prediction:
         """Verify a factual claim."""
         try:
-            out = self.step(claim=claim)
+            out = self.step(claim=claim)  # type: ignore
             
             # Normalize verdict
-            raw_verdict = (out.verdict or "").strip().lower()
+            raw_verdict = (out.verdict or "").strip().lower()  # type: ignore
             
             if "yes" in raw_verdict and "no" not in raw_verdict:
                 normalized_verdict = "yes"
             elif "no" in raw_verdict and "yes" not in raw_verdict:
                 normalized_verdict = "no"
             else:
-                logger.warning(f"Ambiguous verdict '{out.verdict}' for claim: {claim}")
+                logger.warning(f"Ambiguous verdict '{out.verdict}' for claim: {claim}")  # type: ignore
                 normalized_verdict = random.choice(["yes", "no"])
             
-            out.verdict = normalized_verdict
-            return out
+            out.verdict = normalized_verdict  # type: ignore
+            return out  # type: ignore
             
         except Exception as e:
             logger.error(f"Error verifying claim '{claim}': {e}")
@@ -152,15 +152,15 @@ class DTESystem:
         
         # Get verdicts from both verifiers
         with dspy.context(lm=self.lm_a):
-            a_prediction = self.verifier_a(claim=claim)
+            a_prediction = self.verifier_a(claim=claim)  # type: ignore
             self.metrics['verifier_a_calls'] += 1
             
         with dspy.context(lm=self.lm_b):
-            b_prediction = self.verifier_b(claim=claim)
+            b_prediction = self.verifier_b(claim=claim)  # type: ignore
             self.metrics['verifier_b_calls'] += 1
         
-        a_verdict = a_prediction.verdict
-        b_verdict = b_prediction.verdict
+        a_verdict = a_prediction.verdict  # type: ignore
+        b_verdict = b_prediction.verdict  # type: ignore
         
         # Check for agreement
         verifiers_agree = (a_verdict == b_verdict)
@@ -180,10 +180,10 @@ class DTESystem:
             self.metrics['judge_calls'] += 1
             
             with dspy.context(lm=self.lm_judge):
-                judge_prediction = self.judge(claim=claim)
+                judge_prediction = self.judge(claim=claim)  # type: ignore
                 
-            final_verdict = judge_prediction.verdict
-            judge_verdict = judge_prediction.verdict
+            final_verdict = judge_prediction.verdict  # type: ignore
+            judge_verdict = judge_prediction.verdict  # type: ignore
             escalated = True
         else:
             # Accept consensus

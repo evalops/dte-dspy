@@ -35,10 +35,10 @@ class BiasedVerifier(dspy.Module):
         biased_claim = self.prompt_prefix + claim
         
         try:
-            out = self.step(claim=biased_claim)
+            out = self.step(claim=biased_claim)  # type: ignore
             
             # Normalize verdict
-            raw_verdict = (out.verdict or "").strip().lower()
+            raw_verdict = (out.verdict or "").strip().lower()  # type: ignore
             
             if "yes" in raw_verdict and "no" not in raw_verdict:
                 normalized_verdict = "yes"
@@ -48,8 +48,8 @@ class BiasedVerifier(dspy.Module):
                 # Default to bias
                 normalized_verdict = self.bias
                 
-            out.verdict = normalized_verdict
-            return out
+            out.verdict = normalized_verdict  # type: ignore
+            return out  # type: ignore
             
         except Exception as e:
             return dspy.Prediction(verdict=self.bias)
@@ -73,11 +73,11 @@ class ForcedDisagreementDTE:
         self.metrics['evaluations'] += 1
         
         # Get biased verdicts (should disagree)
-        a_result = self.verifier_yes(claim=claim)
-        b_result = self.verifier_no(claim=claim)
+        a_result = self.verifier_yes(claim=claim)  # type: ignore
+        b_result = self.verifier_no(claim=claim)  # type: ignore
         
-        a_verdict = a_result.verdict
-        b_verdict = b_result.verdict
+        a_verdict = a_result.verdict  # type: ignore
+        b_verdict = b_result.verdict  # type: ignore
         
         # Check agreement (should be rare with biased verifiers)
         if a_verdict == b_verdict:
@@ -88,9 +88,9 @@ class ForcedDisagreementDTE:
         else:
             # Expected disagreement → escalate
             self.metrics['escalations'] += 1
-            referee_result = self.referee(claim=claim)
-            final_verdict = referee_result.verdict
-            judge_verdict = referee_result.verdict
+            referee_result = self.referee(claim=claim)  # type: ignore
+            final_verdict = referee_result.verdict  # type: ignore
+            judge_verdict = referee_result.verdict  # type: ignore
             escalated = True
 
         return DTEResult(

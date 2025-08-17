@@ -38,15 +38,15 @@ class Verifier(dspy.Module):
             return dspy.Prediction(verdict="no", reasoning="Empty claim")
             
         try:
-            out = self.step(claim=claim)
+            out = self.step(claim=claim)  # type: ignore
             
             # Validate output structure
-            if not hasattr(out, 'verdict') or out.verdict is None:
+            if not hasattr(out, 'verdict') or out.verdict is None:  # type: ignore
                 logger.warning(f"Model output missing verdict for claim: {claim}")
                 return dspy.Prediction(verdict="no", reasoning="Model output error")
             
             # Normalize verdict with better handling
-            raw_verdict = str(out.verdict).strip().lower()
+            raw_verdict = str(out.verdict).strip().lower()  # type: ignore
             
             # Enhanced verdict parsing
             if any(word in raw_verdict for word in ['yes', 'true', 'correct', 'valid']):
@@ -71,8 +71,8 @@ class Verifier(dspy.Module):
                 else:
                     normalized_verdict = "no"  # Conservative default
             
-            out.verdict = normalized_verdict
-            return out
+            out.verdict = normalized_verdict  # type: ignore
+            return out  # type: ignore
             
         except Exception as e:
             logger.error(f"Error verifying claim '{claim}': {e}")
@@ -234,11 +234,11 @@ class DTESystem:
         try:
             # Get verdicts from both verifiers
             with dspy.context(lm=self.verifier_a_lm):
-                a_prediction = self.verifier_a(claim=claim)
+                a_prediction = self.verifier_a(claim=claim)  # type: ignore
                 self.metrics['verifier_a_calls'] += 1
                 
             with dspy.context(lm=self.verifier_b_lm):
-                b_prediction = self.verifier_b(claim=claim)
+                b_prediction = self.verifier_b(claim=claim)  # type: ignore
                 self.metrics['verifier_b_calls'] += 1
             
             # Extract reasoning and create results with dynamic confidence
@@ -250,13 +250,13 @@ class DTESystem:
             b_confidence = getattr(b_prediction, 'confidence', None)
             
             a_result = VerificationResult.from_verdict(
-                a_prediction.verdict, 
+                a_prediction.verdict,  # type: ignore
                 reasoning=a_reasoning,
                 raw_output=str(a_prediction),
                 structured_confidence=a_confidence
             )
             b_result = VerificationResult.from_verdict(
-                b_prediction.verdict,
+                b_prediction.verdict,  # type: ignore
                 reasoning=b_reasoning, 
                 raw_output=str(b_prediction),
                 structured_confidence=b_confidence
@@ -285,12 +285,12 @@ class DTESystem:
                 self.metrics['judge_calls'] += 1
                 
                 with dspy.context(lm=self.judge_lm):
-                    judge_prediction = self.judge(claim=claim)
+                    judge_prediction = self.judge(claim=claim)  # type: ignore
                     
                 judge_reasoning = getattr(judge_prediction, 'reasoning', '')
                 judge_confidence = getattr(judge_prediction, 'confidence', None)
                 judge_result = VerificationResult.from_verdict(
-                    judge_prediction.verdict,
+                    judge_prediction.verdict,  # type: ignore
                     reasoning=judge_reasoning,
                     raw_output=str(judge_prediction),
                     structured_confidence=judge_confidence
