@@ -67,7 +67,7 @@ class DTEConfig:
             api_base=os.getenv("DTE_API_BASE", cls.api_base),
             gamma=float(os.getenv("DTE_GAMMA", cls.gamma)),
             use_cot=os.getenv("DTE_USE_COT", "true").lower() == "true",
-            random_seed=int(os.getenv("DTE_RANDOM_SEED")) if os.getenv("DTE_RANDOM_SEED") else None,
+            random_seed=int(seed_str) if (seed_str := os.getenv("DTE_RANDOM_SEED")) else None,
             output_dir=os.getenv("DTE_OUTPUT_DIR", cls.output_dir),
             verbose=os.getenv("DTE_VERBOSE", "false").lower() == "true",
         )

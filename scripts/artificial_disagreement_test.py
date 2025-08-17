@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import dspy
 from typing import Optional
-from dte_ollama import Verifier, DTEResult
+from scripts.dte_ollama import Verifier, DTEResult
 
 class BiasedVerifier(dspy.Module):
     """A verifier that's biased toward 'yes' or 'no' to force disagreements."""
@@ -84,23 +84,23 @@ class ForcedDisagreementDTE:
             # Rare consensus
             final_verdict = a_verdict
             escalated = False
-            referee_verdict = None
+            judge_verdict = None
         else:
             # Expected disagreement → escalate
             self.metrics['escalations'] += 1
             referee_result = self.referee(claim=claim)
             final_verdict = referee_result.verdict
-            referee_verdict = referee_result.verdict
+            judge_verdict = referee_result.verdict
             escalated = True
-            
+
         return DTEResult(
             claim=claim,
             final_verdict=final_verdict,
             escalated=escalated,
             verifier_a_verdict=a_verdict,
             verifier_b_verdict=b_verdict,
-            referee_verdict=referee_verdict
-        )
+            judge_verdict=judge_verdict
+            )
 
 def main():
     """Demonstrate forced disagreements."""
@@ -135,7 +135,7 @@ def main():
         if result.escalated:
             print(f"    YES-Biased: {result.verifier_a_verdict}")
             print(f"    NO-Biased:  {result.verifier_b_verdict}")
-            print(f"    🔥 DISAGREEMENT → Referee: {result.referee_verdict}")
+            print(f"    🔥 DISAGREEMENT → Referee: {result.judge_verdict}")
             print(f"    Final: {result.final_verdict} (3 calls)")
             cost_indicator = "💰💰💰"
         else:

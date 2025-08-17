@@ -18,7 +18,7 @@ import json
 from dataclasses import asdict
 import logging
 
-from dte_core import DTESystem, DTEResult, VerificationResult
+from scripts.dte_core import DTESystem, DTEResult, VerificationResult
 
 logger = logging.getLogger(__name__)
 
@@ -324,7 +324,7 @@ def create_example_dataset() -> pd.DataFrame:
 
 if __name__ == "__main__":
     # Example usage
-    from dte_core import create_simple_test_models
+    from scripts.dte_core import create_simple_test_models
     
     # Create DTE system
     model_a, model_b, referee = create_simple_test_models()

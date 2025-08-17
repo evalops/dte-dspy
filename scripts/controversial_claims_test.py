@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dte_ollama import DTESystem
+from scripts.dte_ollama import DTESystem
 
 def create_controversial_dataset():
     """Create claims with genuine ambiguity that could cause model disagreements."""
@@ -64,7 +64,7 @@ def main():
     dte = DTESystem(
         verifier_a_model="llama3.2:latest",    # Small, recent
         verifier_b_model="gpt-oss:20b",        # Large, different architecture
-        referee_model="qwq:latest",            # Reasoning-focused
+        judge_model="qwq:latest",            # Reasoning-focused
         gamma=0.7
     )
     
@@ -96,7 +96,7 @@ def main():
         print(f"        A: {result.verifier_a_verdict:<3} | B: {result.verifier_b_verdict:<3} | {status}")
         
         if result.escalated:
-            print(f"        Referee: {result.referee_verdict} → Final: {result.final_verdict} ({cost}) {correct}")
+            print(f"        Referee: {result.judge_verdict} → Final: {result.final_verdict} ({cost}) {correct}")
         else:
             print(f"        Final: {result.final_verdict} ({cost}) {correct}")
         print()

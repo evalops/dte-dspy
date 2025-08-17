@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dte_ollama import DTESystem
+from scripts.dte_ollama import DTESystem
 
 def main():
     """Test with models likely to disagree."""
@@ -18,7 +18,7 @@ def main():
     dte = DTESystem(
         verifier_a_model="llama3.2:latest",    # Small recent model
         verifier_b_model="gpt-oss:20b",        # Different architecture 
-        referee_model="qwq:latest",            # Reasoning-focused model
+        judge_model="qwq:latest",            # Reasoning-focused model
         gamma=0.7
     )
     
@@ -45,7 +45,7 @@ def main():
         print(f"    A: {result.verifier_a_verdict} | B: {result.verifier_b_verdict} | Agree: {agree}")
         
         if result.escalated:
-            print(f"    🔥 ESCALATED → Referee: {result.referee_verdict}")
+            print(f"    🔥 ESCALATED → Referee: {result.judge_verdict}")
             print(f"    Final: {result.final_verdict} (3 calls)")
         else:
             print(f"    🤝 Consensus: {result.final_verdict} (2 calls)")

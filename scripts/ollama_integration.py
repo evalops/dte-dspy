@@ -231,7 +231,7 @@ def create_ollama_dte_system(
     Returns:
         Configured DTESystem instance
     """
-    from dte_core import DTESystem
+    from scripts.dte_core import DTESystem
     
     manager = OllamaModelManager(base_url)
     

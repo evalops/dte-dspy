@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dte_ollama import DTESystem
+from scripts.dte_ollama import DTESystem
 
 def main():
     """Run a quick DTE test."""
@@ -17,7 +17,7 @@ def main():
     dte = DTESystem(
         verifier_a_model="llama3.2:latest",    # Small, fast model
         verifier_b_model="llama3:8b",          # Different model for diversity  
-        referee_model="llama3.1:8b",           # Referee model
+        judge_model="llama3.1:8b",           # Referee model
         gamma=0.7
     )
     print("✓ DTE system initialized")
@@ -45,7 +45,7 @@ def main():
         print(f"  Verifier B: {result.verifier_b_verdict}")
         
         if result.escalated:
-            print(f"  Referee: {result.referee_verdict}")
+            print(f"  Referee: {result.judge_verdict}")
             print(f"  → Final: {result.final_verdict} [{status}] {correct}")
         else:
             print(f"  → Final: {result.final_verdict} [{status}] {correct}")

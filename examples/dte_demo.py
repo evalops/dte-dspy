@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dte_ollama import DTESystem
+from scripts.dte_ollama import DTESystem
 
 def main():
     """Demo the DTE system."""

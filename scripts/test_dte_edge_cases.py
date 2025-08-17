@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dte_ollama import DTESystem
+from scripts.dte_ollama import DTESystem
 
 def create_edge_case_dataset():
     """Create claims that are likely to cause disagreements between models."""
@@ -61,7 +61,7 @@ def main():
     dte = DTESystem(
         verifier_a_model="llama3.2:latest",    # Smaller model
         verifier_b_model="llama3.1:8b",        # Larger model
-        referee_model="qwq:latest",            # Different architecture as referee
+        judge_model="qwq:latest",            # Different architecture as referee
         gamma=0.7
     )
     print("✓ DTE system initialized with diverse models")
@@ -88,7 +88,7 @@ def main():
         print(f"  A: {result.verifier_a_verdict:<3} | B: {result.verifier_b_verdict:<3} | Agreement: {result.verifier_a_verdict == result.verifier_b_verdict}")
         
         if result.escalated:
-            print(f"  → Referee: {result.referee_verdict} | Final: {result.final_verdict} [{status}] {correct}")
+            print(f"  → Referee: {result.judge_verdict} | Final: {result.final_verdict} [{status}] {correct}")
         else:
             print(f"  → Final: {result.final_verdict} [{status}] {correct}")
     
