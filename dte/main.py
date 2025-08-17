@@ -232,7 +232,11 @@ def main(args: Optional[List[str]] = None) -> int:
         if parsed_args.report and isinstance(results, dict) and 'sweep_results' in results:
             import pandas as pd
             sweep_df = pd.DataFrame(results['sweep_results'])
-            report = evaluator.generate_report(sweep_df, results.get('dataset_info'))
+            dataset_info = results.get('dataset_info')
+            if isinstance(dataset_info, dict):
+                report = evaluator.generate_report(sweep_df, dataset_info)
+            else:
+                report = evaluator.generate_report(sweep_df, None)
             print(f"\n{report}")
         
         # Save results
@@ -265,10 +269,11 @@ def main(args: Optional[List[str]] = None) -> int:
         # Print summary
         if isinstance(results, dict) and 'metrics' in results:
             metrics = results['metrics']
-            print(f"\n📈 Summary:")
-            print(f"   Accuracy: {metrics.get('overall_accuracy', 0):.1%}")
-            print(f"   Escalation rate: {metrics.get('escalation_rate', 0):.1%}")
-            print(f"   Average cost: {metrics.get('avg_calls_per_evaluation', 0):.1f} calls/claim")
+            if isinstance(metrics, dict):
+                print(f"\n📈 Summary:")
+                print(f"   Accuracy: {metrics.get('overall_accuracy', 0):.1%}")
+                print(f"   Escalation rate: {metrics.get('escalation_rate', 0):.1%}")
+                print(f"   Average cost: {metrics.get('avg_calls_per_evaluation', 0):.1f} calls/claim")
         
         return 0
         

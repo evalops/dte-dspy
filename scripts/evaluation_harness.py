@@ -155,8 +155,8 @@ class DTEEvaluator:
         accuracy = np.mean(predictions == ground_truth)
         
         # Escalation-specific metrics
-        escalated_mask = np.array(escalation_flags)
-        escalation_rate = np.mean(escalated_mask)
+        escalated_mask = np.array(escalation_flags, dtype=bool)
+        escalation_rate = np.mean(escalated_mask.astype(float))
         
         escalated_accuracy = None
         non_escalated_accuracy = None
@@ -318,7 +318,7 @@ def create_example_dataset() -> pd.DataFrame:
     
     ground_truth = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
     
-    evaluator = DTEEvaluator(None)  # Will be replaced in actual usage
+    evaluator = DTEEvaluator(None)  # type: ignore # Will be replaced in actual usage
     return evaluator.load_dataset(claims, ground_truth, "example")
 
 

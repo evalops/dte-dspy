@@ -66,9 +66,9 @@ def test_controversial_claims():
         mock_referee_uncertain.verdict = "no"
         mock_referee_uncertain.reasoning = "This is complex and controversial, leaning toward false"
         
-        dte.verifier_a.forward = lambda **kwargs: mock_strong_yes
-        dte.verifier_b.forward = lambda **kwargs: mock_strong_no
-        dte.judge.forward = lambda **kwargs: mock_referee_uncertain
+        dte.verifier_a.forward = lambda **kwargs: mock_strong_yes  # type: ignore
+        dte.verifier_b.forward = lambda **kwargs: mock_strong_no  # type: ignore
+        dte.judge.forward = lambda **kwargs: mock_referee_uncertain  # type: ignore
         
         result = dte.evaluate_claim(claim)
         
@@ -118,9 +118,9 @@ def test_uncertainty_scenarios():
         mock_referee_analytical.verdict = "no"
         mock_referee_analytical.reasoning = "Insufficient evidence to support this claim definitively"
         
-        dte.verifier_a.forward = lambda **kwargs: mock_uncertain_yes
-        dte.verifier_b.forward = lambda **kwargs: mock_uncertain_yes_2
-        dte.judge.forward = lambda **kwargs: mock_referee_analytical
+        dte.verifier_a.forward = lambda **kwargs: mock_uncertain_yes  # type: ignore
+        dte.verifier_b.forward = lambda **kwargs: mock_uncertain_yes_2  # type: ignore
+        dte.judge.forward = lambda **kwargs: mock_referee_analytical  # type: ignore
         
         result = dte.evaluate_claim(claim)
         
@@ -170,9 +170,9 @@ def test_edge_case_disagreements():
         mock_referee_authoritative.verdict = "no"  # Correct
         mock_referee_authoritative.reasoning = "This is factually incorrect and easily verifiable as false"
         
-        dte.verifier_a.forward = lambda **kwargs: mock_correct
-        dte.verifier_b.forward = lambda **kwargs: mock_wrong
-        dte.judge.forward = lambda **kwargs: mock_referee_authoritative
+        dte.verifier_a.forward = lambda **kwargs: mock_correct  # type: ignore
+        dte.verifier_b.forward = lambda **kwargs: mock_wrong  # type: ignore
+        dte.judge.forward = lambda **kwargs: mock_referee_authoritative  # type: ignore
         
         result = dte.evaluate_claim(claim)
         
@@ -214,9 +214,9 @@ def test_gamma_sensitivity():
         mock_referee.verdict = "yes"
         mock_referee.reasoning = "Analysis confirms this is correct"
         
-        dte.verifier_a.forward = lambda **kwargs: mock_moderate_yes
-        dte.verifier_b.forward = lambda **kwargs: mock_moderate_yes_2
-        dte.judge.forward = lambda **kwargs: mock_referee
+        dte.verifier_a.forward = lambda **kwargs: mock_moderate_yes  # type: ignore
+        dte.verifier_b.forward = lambda **kwargs: mock_moderate_yes_2  # type: ignore
+        dte.judge.forward = lambda **kwargs: mock_referee  # type: ignore
         
         result = dte.evaluate_claim(test_claim)
         

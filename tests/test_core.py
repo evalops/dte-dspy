@@ -138,7 +138,7 @@ class TestVerifier:
         verifier = Verifier(use_cot=False)
         
         # Mock the step method
-        verifier.step = lambda claim: mock_lm_yes()
+        verifier.step = lambda claim: mock_lm_yes()  # type: ignore
         
         result = verifier.forward("Test claim")
         assert result.verdict == "yes"

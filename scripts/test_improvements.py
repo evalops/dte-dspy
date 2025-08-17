@@ -61,7 +61,7 @@ def test_error_handling():
     assert result.verdict == "no", f"Expected 'no' for empty claim, got {result.verdict}"
     
     # Test with mock that returns None
-    verifier.step = lambda claim: None
+    verifier.step = lambda claim: None  # type: ignore
     result = verifier.forward("test claim")
     assert result.verdict == "no", f"Expected 'no' for None output, got {result.verdict}"
     
@@ -87,7 +87,7 @@ def test_verdict_parsing():
         mock_output.verdict = raw_verdict
         mock_output.reasoning = ""
         
-        verifier.step = lambda claim: mock_output
+        verifier.step = lambda claim: mock_output  # type: ignore
         result = verifier.forward("test claim")
         
         assert result.verdict == expected, f"Expected {expected} for '{raw_verdict}', got {result.verdict}"
@@ -120,9 +120,9 @@ def test_dte_system_integration():
     mock_referee_output.reasoning = "After careful analysis, I'm 95% confident this is correct"
     
     # Override verifier methods
-    dte.verifier_a.forward = lambda **kwargs: mock_a_output
-    dte.verifier_b.forward = lambda **kwargs: mock_b_output
-    dte.judge.forward = lambda **kwargs: mock_referee_output
+    dte.verifier_a.forward = lambda **kwargs: mock_a_output  # type: ignore
+    dte.verifier_b.forward = lambda **kwargs: mock_b_output  # type: ignore
+    dte.judge.forward = lambda **kwargs: mock_referee_output  # type: ignore
     
     # Test evaluation
     result = dte.evaluate_claim("Test claim", "yes")

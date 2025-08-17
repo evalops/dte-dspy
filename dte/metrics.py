@@ -159,7 +159,7 @@ def compare_configurations(metrics_list: List[MetricsResult],
     if len(metrics_list) != len(config_names):
         raise ValueError("Metrics and config names must have same length")
     
-    comparison = {
+    comparison: Dict[str, Any] = {
         'configurations': config_names,
         'accuracy_comparison': [m.overall_accuracy for m in metrics_list],
         'cost_comparison': [m.avg_calls_per_evaluation for m in metrics_list],
