@@ -15,55 +15,55 @@ import dspy
 @dataclass
 class DTEConfig:
     """Configuration for DTE system experiments."""
-    
+
     # Model configuration
     verifier_a_model: str = "llama3.2:latest"
     verifier_b_model: str = "llama3:8b"
-    referee_model: str = "llama3.1:8b"
+    judge_model: str = "llama3.1:8b"
     api_base: str = "http://localhost:11434"
-    
+
     # Model parameters
     temperature_a: float = 0.1  # Low temp for consistency
     temperature_b: float = 0.9  # High temp for diversity
-    temperature_referee: float = 0.0  # Deterministic referee
+    temperature_judge: float = 0.0  # Deterministic judge
     max_tokens: int = 512
-    
+
     # DTE parameters
     gamma: float = 0.7  # Confidence threshold for escalation
     use_cot: bool = True  # Use Chain of Thought reasoning
-    
+
     # Experiment parameters
     num_trials: int = 1  # Number of runs per configuration
     random_seed: Optional[int] = None
-    
+
     # Evaluation parameters
     dataset_name: str = "default"
     dataset_size: Optional[int] = None  # Limit dataset size
-    
+
     # Output configuration
     output_dir: str = "results"
     save_detailed_results: bool = True
     verbose: bool = False
-    
+
     # Caching
     enable_cache: bool = True
     cache_dir: str = ".cache"
-    
+
     def __post_init__(self):
         """Validate configuration after initialization."""
         if self.gamma < 0 or self.gamma > 1:
             raise ValueError("gamma must be between 0 and 1")
-            
-        if self.temperature_a < 0 or self.temperature_b < 0 or self.temperature_referee < 0:
+
+        if self.temperature_a < 0 or self.temperature_b < 0 or self.temperature_judge < 0:
             raise ValueError("temperatures must be non-negative")
-    
+
     @classmethod
     def from_env(cls) -> "DTEConfig":
         """Create configuration from environment variables."""
         return cls(
             verifier_a_model=os.getenv("DTE_VERIFIER_A_MODEL", cls.verifier_a_model),
             verifier_b_model=os.getenv("DTE_VERIFIER_B_MODEL", cls.verifier_b_model),
-            referee_model=os.getenv("DTE_REFEREE_MODEL", cls.referee_model),
+            judge_model=os.getenv("DTE_JUDGE_MODEL", cls.judge_model),
             api_base=os.getenv("DTE_API_BASE", cls.api_base),
             gamma=float(os.getenv("DTE_GAMMA", cls.gamma)),
             use_cot=os.getenv("DTE_USE_COT", "true").lower() == "true",
@@ -71,7 +71,7 @@ class DTEConfig:
             output_dir=os.getenv("DTE_OUTPUT_DIR", cls.output_dir),
             verbose=os.getenv("DTE_VERBOSE", "false").lower() == "true",
         )
-    
+
     def create_language_models(self) -> tuple[dspy.LM, dspy.LM, dspy.LM]:
         """Create configured language model instances."""
         verifier_a_lm = dspy.LM(
@@ -80,35 +80,35 @@ class DTEConfig:
             temperature=self.temperature_a,
             max_tokens=self.max_tokens
         )
-        
+
         verifier_b_lm = dspy.LM(
             model=f"ollama/{self.verifier_b_model}",
             api_base=self.api_base,
             temperature=self.temperature_b,
             max_tokens=self.max_tokens
         )
-        
-        referee_lm = dspy.LM(
-            model=f"ollama/{self.referee_model}",
+
+        judge_lm = dspy.LM(
+            model=f"ollama/{self.judge_model}",
             api_base=self.api_base,
-            temperature=self.temperature_referee,
+            temperature=self.temperature_judge,
             max_tokens=self.max_tokens
         )
-        
-        return verifier_a_lm, verifier_b_lm, referee_lm
-    
+
+        return verifier_a_lm, verifier_b_lm, judge_lm
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary."""
         return {
             "verifier_a_model": self.verifier_a_model,
             "verifier_b_model": self.verifier_b_model,
-            "referee_model": self.referee_model,
+            "judge_model": self.judge_model,
             "api_base": self.api_base,
             "gamma": self.gamma,
             "use_cot": self.use_cot,
             "temperature_a": self.temperature_a,
             "temperature_b": self.temperature_b,
-            "temperature_referee": self.temperature_referee,
+            "temperature_judge": self.temperature_judge,
             "max_tokens": self.max_tokens,
         }
 
@@ -120,7 +120,7 @@ def setup_logging(level: str = "INFO") -> None:
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"
     )
-    
+
     # Set DSPy logging to WARNING to reduce noise
     logging.getLogger("dspy").setLevel(logging.WARNING)
 
@@ -128,7 +128,7 @@ def setup_logging(level: str = "INFO") -> None:
 def validate_ollama_connection(api_base: str = "http://localhost:11434") -> bool:
     """Validate that Ollama is running and accessible."""
     import requests
-    
+
     try:
         response = requests.get(f"{api_base}/api/tags", timeout=5)
         return response.status_code == 200
@@ -139,7 +139,7 @@ def validate_ollama_connection(api_base: str = "http://localhost:11434") -> bool
 def list_available_models(api_base: str = "http://localhost:11434") -> list[str]:
     """List available Ollama models."""
     import requests
-    
+
     try:
         response = requests.get(f"{api_base}/api/tags", timeout=5)
         if response.status_code == 200:
@@ -148,3 +148,31 @@ def list_available_models(api_base: str = "http://localhost:11434") -> list[str]
         return []
     except requests.RequestException:
         return []
+
+
+def validate_models_present(models: list[str], api_base: str = "http://localhost:11434") -> tuple[bool, list[str]]:
+    """Validate that all required models are present in Ollama.
+
+    Returns:
+        tuple: (all_present, missing_models)
+    """
+    available_models = list_available_models(api_base)
+    missing_models = []
+
+    for model in models:
+        if model not in available_models:
+            missing_models.append(model)
+
+    return len(missing_models) == 0, missing_models
+
+
+def generate_pull_commands(missing_models: list[str]) -> str:
+    """Generate helpful ollama pull commands for missing models."""
+    if not missing_models:
+        return ""
+
+    commands = []
+    for model in missing_models:
+        commands.append(f"ollama pull {model}")
+
+    return "Run these commands to install missing models:\n" + "\n".join(commands)

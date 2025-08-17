@@ -16,7 +16,7 @@ setup(
     description="Disagreement-Triggered Escalation framework using DSPy",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/dte-research/dte-dspy",
+    url="https://github.com/evalops/dte-dspy",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -33,7 +33,7 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     install_requires=requirements,
     extras_require={
         "dev": [
@@ -57,8 +57,8 @@ setup(
     },
     keywords="disagreement escalation dspy llm verification fact-checking",
     project_urls={
-        "Bug Reports": "https://github.com/dte-research/dte-dspy/issues",
-        "Source": "https://github.com/dte-research/dte-dspy",
-        "Documentation": "https://dte-research.github.io/dte-dspy",
+        "Bug Reports": "https://github.com/evalops/dte-dspy/issues",
+        "Source": "https://github.com/evalops/dte-dspy",
+        "Documentation": "https://github.com/evalops/dte-dspy",
     },
 )
